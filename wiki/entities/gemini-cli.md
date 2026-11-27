@@ -15,6 +15,7 @@ sources:
   - "[[sources/local-cli-telemetry]]"
   - "[[sources/pricing-quotas-2026]]"
   - "[[sources/prompt-efficiency-metrics]]"
+  - "[[sources/oauth-tos-constraints]]"
 status: active
 ---
 
@@ -39,13 +40,15 @@ status: active
 
 ---
 
-## 2. 쿼터·캐싱·단가 특성 (2026-11-27 기준)
+## 2. 쿼터·캐싱·OAuth 제약 (2026-11-27 기준)
 
-- **일일 요청 한도(Hard Cap)**:
-  - Google 개인 계정 / Code Assist Individual: `1,000 req/day`
+- **일일 요청 한도(Hard Cap, `API Request` 총합 기준)**:
+  - Google 개인 계정 / Code Assist Individual: `1,000 req/day` (Pacific Time 자정 리셋 기본 + 로컬 자정 토글)
   - **Google AI Pro**: `1,500 req/day`
   - **Google AI Ultra**: `2,000 req/day`
   - Gemini API Free 키: `250 req/day` / Pay-As-You-Go는 계층별 RPM.
+- **OAuth / ToS 제약 ([[sources/oauth-tos-constraints]])**:
+  - 서드파티 앱의 소비자 OAuth 무임승차(piggybacking) 금지 및 개인 구독 잔여 한도 API 원천 부재 → 로컬 `API Request` 카운트 기반이 유일한 안전·정확 경로(GCP/Vertex AI 프로젝트 사용자만 v2 공식 Service Usage API 확장 대상).
 - **캐싱 구조**:
   - Gemini 4 계열은 **Implicit Caching 전용**(최소 프리픽스 `4,096` 토큰, 최대 95% 할인). Explicit Caching 미지원.
 - **효율 포인트**:

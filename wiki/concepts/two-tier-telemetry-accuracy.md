@@ -8,17 +8,19 @@ tags:
   - accuracy
   - privacy
   - telemetry
+  - oauth
 created: 2026-11-27
 updated: 2026-11-27
 sources:
   - "[[sources/local-cli-telemetry]]"
   - "[[sources/macos-architecture-constraints]]"
+  - "[[sources/oauth-tos-constraints]]"
 status: active
 ---
 
 # 2계층 텔레메트리 정확도 모델 (Two-Tier Accuracy & Privacy)
 
-- **배경**: 100% 로컬 처리 원칙(v1)과 웹·CLI 공유 풀을 가진 벤더 구독 한도의 정확한 실시간 잔여량 파악 요구 사이의 간극 해결.
+- **배경**: 100% 로컬 처리 원칙(v1)과 벤더별 OAuth/ToS 제약([[sources/oauth-tos-constraints]])을 준수하면서 구독 한도·실제 잔여량을 가장 정직하고 합법적으로 제공하는 설계.
 
 ---
 
@@ -26,45 +28,48 @@ status: active
 
 | 계층 | 수집 방식 | 적용 시점 | 산출 가능 데이터 | UI 표기 배지 |
 | :--- | :--- | :---: | :--- | :--- |
-| **Tier 1-A (Exact Local)** | `~/.gemini`, `~/.claude`, `~/.codex` 로컬 파일 파싱 | **v1.0** | CLI 토큰(Input/Output/Cache/Thoughts), 턴당 효율, API 환산 비용, 일일 CLI 요청 수 | `실측 (Local)` |
+| **Tier 1-A (Exact Local)** | `~/.gemini`, `~/.claude`, `~/.codex` 로컬 파일 파싱 | **v1.0** | CLI 토큰(Input/Output/Cache/Thoughts), 턴당 효율, API 환산 비용, 일일 `API Request` 수 | `실측 (Local)` |
 | **Tier 1-B (Adaptive Baseline)** | 로컬 사용량 + 5시간 블록·과거 피크·사용자 기준선 모델링 | **v1.0** | 5시간 경과·리셋 카운트다운·누적 비용·번레이트·과거 피크 대비 바 (`%`는 기준 입력·429 학습 시에만 활성) | `추정 (CLI 기준)` |
-| **Tier 2 (Verified, Opt-in)** | 사용자 명시 동의 기반 공식 API/OAuth 또는 CLI `/usage` 상태 프로브 | **v2.0** | 서버 기준 실제 잔여 쿼터·API 크레딧 잔액·조직 한도 | `공식 동기화` |
+| **Tier 2 (Verified, Opt-in)** | 벤더별 ToS 준수 공식/로컬 브리지 (v2.0) | **v2.0** | Claude `rate_limits` 실측 %, GCP/Vertex Service Usage, Codex CLI `/status`·Org API 한도 | `공식 동기화` |
 
 ---
 
-## 2. 5시간 블록 Adaptive Baseline & 시간대·인증 구분 규칙
+## 2. 벤더별 v2.0 Tier 2 합법 연동 경로 (소비자 OAuth 스크래핑 금지)
+
+- **Claude Code (ToS 준수 최우선 경로)**: 비공식 `/api/oauth/usage` 토큰 탈취 대신, 사용자가 Opt-in 시 `~/.claude/settings.json` Statusline에 경량 브리지 연결 → Claude Code가 `stdin`으로 전달하는 공식 **`rate_limits.five_hour` / `rate_limits.seven_day`** 수신.
+- **Gemini CLI**: 개인 구독은 소비자 OAuth 무임승차 금지 및 쿼터 API 부재로 Tier 1-A(`API Request` 총합 + PT 자정 리셋) 유지. GCP/Vertex AI API 사용자에 한해 공식 Google OAuth + Service Usage API 확장.
+- **OpenAI Codex CLI**: 비공식 `wham/usage` 엔드포인트 호출 배제, 사용자 동의 시 CLI `/status`·`/usage` 로컬 실행 파싱 또는 API Org 공식 Usage API 연동.
+
+---
+
+## 3. Adaptive Baseline, 시간대 및 Auth 모드 구분 규칙
 
 1. **비공개 분모 억지 `%` 배제 (Adaptive Baseline)**:
-   - Anthropic(Claude Pro/Max/Ultra)과 OpenAI(ChatGPT Plus/Pro)는 5시간당 정확한 토큰/달러 상한을 비공개하며 트래픽·모델별로 동적 조정.
-   - 따라서 v1 기본 UI에서는 Claude/Codex에 임의 `%`를 강제하지 않고 **5시간 경과·리셋 카운트다운 + 현재 블록 누적 토큰/환산 비용 + 번레이트($/h) + 사용자의 과거 5시간 최대 피크 대비 상대 바**를 기본 표시.
-   - `%` 게이지는 (a) 사용자가 직접 기준 한도(예: 블록당 $X 또는 Y만 토큰) 입력, (b) 429 한도 차단 이력 자가 학습, (c) v2 Tier 2 공식 동기화 연결 시에만 활성화.
-2. **리셋 시간대 기준**:
-   - **Gemini CLI 일일 쿼터**: 벤더 실제 리셋 기준(**Pacific Time 자정**, KST 기준 오후 4~5시) 기본 적용 + 설정에서 로컬 자정(KST) 전환 토글 지원.
-   - **Claude/Codex 5시간 블록**: 해당 블록 첫 요청 시각 + 5시간 롤링 윈도우.
-3. **인증 모드(Auth Mode) 자동 구분**:
-   - 설정·환경변수(`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`) 및 로그 메타데이터를 우선 감지해 **구독 로그인(`Subscription`)**과 **종량제 키(`API Key`)** 세션을 분리 집계(사용자 수동 태깅 오버라이드 지원).
+   - Claude/Codex 5시간 블록 기본 UI는 **경과·리셋 카운트다운 + 누적 토큰/환산 비용 + 번레이트($/h) + 과거 5시간 최대 피크 대비 상대 바** 표기.
+   - `%` 게이지는 사용자 기준 입력, 429 차단 이력 자가 학습, 또는 v2 Tier 2 연동 시에만 활성화.
+2. **단위 및 시간대 기준**:
+   - **Gemini 일일 쿼터 분자**: `User Prompt Turn`이 유발한 `Agent Loop Step` 및 `System Overhead`를 모두 포함한 **`API Request` 총합** (효율 분석 분모인 `User Prompt Turn`과 엄격 분리).
+   - **리셋 시간대**: Gemini CLI 일일 쿼터는 **Pacific Time(PT) 자정** 기본 + 로컬 자정 토글 지원.
+3. **Auth 모드 구분 (시크릿 미열람 원칙)**:
+   - macOS `launchd` GUI 앱은 터미널 환경변수에 접근 불가하며 `.zshrc`/`.env` 스캔도 금지.
+   - **① CLI 설정 파일의 비민감 인증 타입 메타데이터(`selectedAuthType` 등, 키·토큰 원문 접근 금지) + ② 프로바이더 기본 과금 모드 설정 + ③ 프로젝트/세션 수동 태깅**으로 `Subscription` vs `API Key` 분리.
 
 ---
 
-## 3. 프라이버시·보안 및 네트워크 원칙
+## 4. 프라이버시·보안 및 네트워크 원칙
 
-1. **Zero-Storage On-Demand 미리보기 (원문 DB 미저장)**:
-   - SQLite DB에는 기본값으로 프롬프트 본문·코드·도구 출력 원문을 저장하지 않고 **토큰 수치·타임스탬프·모델명·도구 호출 메타데이터(도구명·바이트 길이·성공 여부)**만 영구 보관.
-   - 대시보드 턴 상세 조회 시 사용자의 질문 식별을 돕기 위해 로컬 원본 로그 파일이 디스크에 남아 있는 경우 **메모리 상에서만 첫 80자를 온디맨드 추출 표시**(디스크/스냅샷/위젯에 복제 저장 금지, 원본 삭제 후에는 메타데이터만 표시).
-2. **네트워크 격리 및 정적 단가 동기화 (v1)**:
-   - v1 기본값은 외부 네트워크 송신 **0건**(Sparkle 업데이트 체크 제외).
-   - 외부 단가 카탈로그(`pricing-catalog.json`)는 번들 내장 + 로컬 오버라이드 + Sparkle 앱 업데이트 갱신을 기본으로 하되, 설정에서 **사용자 Opt-in 시에만** GitHub 공식 정적 단가 JSON 읽기 전용 동기화 허용(사용자 사용량·식별 정보 송신 0건).
-3. **비공식 스크래핑 기본 배제**:
-   - 브라우저 쿠키 탈취 등 비공식 세션 스크래핑을 기본 수집 방식으로 채택하지 않음.
-4. **시각화**: ![[visuals/telemetry-pipeline-and-accuracy.excalidraw]]
+1. **Zero-Storage On-Demand 미리보기**: SQLite DB 및 `widget-snapshot.json`에 프롬프트 원문 저장 금지(로컬 원본 파일 잔존 시 대시보드 조회 순간 메모리에서만 첫 80자 온디맨드 추출).
+2. **네트워크 격리 (v1)**: 기본 오프라인 100%(Sparkle 체크 제외). 단가 카탈로그(`pricing-catalog.json`) 자동 동기화는 Opt-in 시에만 정적 JSON 읽기 전용 GET 요청(사용자 데이터 송신 0건).
+3. **시각화**: ![[visuals/telemetry-pipeline-and-accuracy.excalidraw]]
 
 ---
 
 ## 관련 문서
 
 - [[sources/local-cli-telemetry|로컬 CLI 텔레메트리 요약]]
+- [[sources/oauth-tos-constraints|OAuth 정책 및 ToS 제약 요약]]
 - [[entities/gemini-cli|Gemini CLI]]
 - [[entities/claude-code|Claude Code]]
 - [[entities/codex-cli|OpenAI Codex CLI]]
 - [[concepts/macos-menubar-widget-architecture|macOS 메뉴 막대·위젯 아키텍처]]
-- [[syntheses/prd-agents-usage-mac|제품 기획서 (PRD)]]
+- [[syntheses/prd-agents-usage-mac|제품 기획서 (PRD v1.2)]]

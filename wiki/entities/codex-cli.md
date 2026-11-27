@@ -14,6 +14,7 @@ updated: 2026-11-27
 sources:
   - "[[sources/local-cli-telemetry]]"
   - "[[sources/pricing-quotas-2026]]"
+  - "[[sources/oauth-tos-constraints]]"
 status: active
 ---
 
@@ -28,7 +29,7 @@ status: active
 - **기본 경로**: `~/.codex/sessions/YYYY/MM/DD/rollout-<timestamp>-<id>.jsonl`.
 - **경로 오버라이드**: 환경변수 `CODEX_HOME` 설정 시 `$CODEX_HOME/sessions/` 우선 탐색 필수.
 - **이벤트 모델**: 날짜별 디렉터리 내 세션당 1개 JSONL 파일. 사용자 프롬프트, 어시스턴트 응답, 쉘 실행, 패치 제안, 도구 실행 이벤트 기록 및 응답 페이로드 내 `input`, `output`, `cache read`, `cache write` 토큰 통계 포함.
-- **보조 확인 수단**: CLI 자체 `/usage`, `/status` 커맨드 지원(v2 Tier 2 선택적 프로브 후보).
+- **보조 확인 수단 및 OAuth 제약 ([[sources/oauth-tos-constraints]])**: CLI 자체 `/usage`, `/status` 커맨드 지원. 비공식 내부 경로(`chatgpt.com/backend-api/wham/usage`) 호출은 배제하고 v1은 Adaptive Baseline 유지, v2 Opt-in에서 CLI `/status` 로컬 프로브 또는 API Org 공식 Usage API 연동.
 
 ---
 

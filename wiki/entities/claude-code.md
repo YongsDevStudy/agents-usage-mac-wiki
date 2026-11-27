@@ -15,6 +15,7 @@ sources:
   - "[[sources/local-cli-telemetry]]"
   - "[[sources/pricing-quotas-2026]]"
   - "[[sources/prompt-efficiency-metrics]]"
+  - "[[sources/oauth-tos-constraints]]"
 status: active
 ---
 
@@ -36,8 +37,10 @@ status: active
 
 ## 2. 5시간 롤링 블록 및 요금제 특성
 
-- **5시간 빌링 블록**: `ccusage blocks` 모델과 동일하게 최초 요청 시점부터 5시간 롤링 윈도우를 로컬에서 재구성해 한도 소진율·번레이트·리셋 카운트다운 추정.
-- **공유 풀 제약**: Claude Pro($20), Max 5x($100, +$100 API 크레딧), Ultra($200, +$200 API 크레딧)는 웹(`claude.ai`)·데스크톱·모바일과 Claude Code가 동일 한도 풀 공유([[concepts/two-tier-telemetry-accuracy]] 참조).
+- **5시간 빌링 블록**: `ccusage blocks` 모델과 동일하게 최초 요청 시점부터 5시간 롤링 윈도우를 로컬에서 재구성해 경과·리셋 카운트다운·누적 비용·번레이트·과거 피크 대비 바(Adaptive Baseline) 제공.
+- **공유 풀 제약 및 ToS 준수 v2 연동 ([[sources/oauth-tos-constraints]])**:
+  - Claude Pro($20), Max 5x($100, +$100 API 크레딧), Ultra($200, +$200 API 크레딧)는 웹(`claude.ai`)·데스크톱·모바일과 동일 한도 풀 공유([[concepts/two-tier-telemetry-accuracy]] 참조).
+  - Consumer ToS가 크리덴셜 수집·중개를 금지하므로 비공식 `/api/oauth/usage` 호출은 배제하고, **v2.0 Opt-in에서 Claude Code 공식 Statusline `stdin`(`rate_limits.five_hour` / `seven_day`) 브리지** 연동.
 - **컨텍스트 위생 지표**: `/compact`, `/clear`, `autoCompactWindow` 설정 여부와 직결되며, Cache Write(`1.25x`/`2.00x`) 대비 Cache Read(`0.025x`~`0.10x`, ITPM 미산입) 비중 극대화가 핵심([[concepts/prompt-efficiency-scoring]] 참조).
 
 ---
