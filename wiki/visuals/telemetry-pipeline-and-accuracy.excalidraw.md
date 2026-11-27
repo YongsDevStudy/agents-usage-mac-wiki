@@ -1,5 +1,5 @@
 ---
-id: telemetry-pipeline-and-accuracy-boundaries
+id: telemetry-pipeline-privacy-tos-accuracy-boundaries
 type: excalidraw
 excalidraw-plugin: parsed
 tags:
@@ -7,12 +7,14 @@ tags:
   - telemetry
   - accuracy
   - privacy
+  - oauth
   - pipeline
 created: 2026-11-27
 updated: 2026-11-27
 sources:
   - "[[concepts/two-tier-telemetry-accuracy]]"
   - "[[sources/local-cli-telemetry]]"
+  - "[[sources/oauth-tos-constraints]]"
 ---
 ==⚠ Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==
 
@@ -20,33 +22,36 @@ sources:
 ## Text Elements
 Tier 1: Local Ingestion & Caveat Guards ^grp-title-grp-ingest
 
-Tier 2: Opt-in Sync (v2) ^grp-title-grp-tier2
+Tier 2: ToS-Compliant Sync (v2 Opt-in) ^grp-title-grp-tier2
 
 UI Trust & Confidence Badges ^grp-title-grp-badge
 
 Raw CLI Logs
 (Gemini / Claude / Codex) ^t-logs-text
 
-Guard: Gemini 30d/50
-Retention Auto-Purge ^t-warn-gemini-text
+Guard: Gemini 30d/50 Purge
++ Hash 3-Step Mapping ^t-warn-gemini-text
 
 Guard: Claude Dedup
 & Placeholder Skew ^t-warn-claude-text
 
-Normalized SQLite
-(Tokens & Metadata Only) ^t-norm-text
+SQLite (Metadata Only)
++ Memory-Only 80c Preview ^t-norm-text
 
-v2 Official API
-/ OAuth Opt-in? ^t-optin-text
+v2 Legal Bridge
+Opt-in Enabled? ^t-optin-text
 
-Official Quota Sync
-(Shared Web+CLI Pool) ^t-probe-text
+Claude Statusline stdin /
+Codex Probe / GCP API ^t-probe-text
+
+Policy Guard: No Consumer
+OAuth Scraping / Secrets ^t-warn-tos-text
 
 Badge: Exact Local
-(Turns, Cache, Cost) ^t-exact-text
+(API Reqs, Turns, Cost) ^t-exact-text
 
-Badge: Estimated Block
-(5h / Daily CLI Cap) ^t-est-text
+Adaptive Baseline
+(Countdown, Cost, Peak Bar) ^t-est-text
 
 Badge: Official Verified
 (Server Remaining %) ^t-verified-text
@@ -67,15 +72,18 @@ No (v1 default) ^edge-6-t-optin-to-t-est-label
 
 Yes (v2) ^edge-7-t-optin-to-t-probe-label
 
-reconcile ^edge-8-t-probe-to-t-verified-label
+enforces ^edge-8-t-warn-tos-to-t-probe-label
+
+reconcile ^edge-9-t-probe-to-t-verified-label
 
 ## Element Links
 ^t-logs: [[sources/local-cli-telemetry]]
 ^t-warn-gemini: [[entities/gemini-cli]]
 ^t-warn-claude: [[entities/claude-code]]
 ^t-norm: [[concepts/two-tier-telemetry-accuracy]]
-^t-optin: [[concepts/two-tier-telemetry-accuracy]]
-^t-probe: [[concepts/two-tier-telemetry-accuracy]]
+^t-optin: [[sources/oauth-tos-constraints]]
+^t-probe: [[sources/oauth-tos-constraints]]
+^t-warn-tos: [[sources/oauth-tos-constraints]]
 ^t-exact: [[concepts/prompt-efficiency-scoring]]
 ^t-est: [[concepts/two-tier-telemetry-accuracy]]
 ^t-verified: [[concepts/plan-roi-recommendation]]
@@ -93,7 +101,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "type": "rectangle",
       "x": 56.0,
       "y": 47.2,
-      "width": 992.3,
+      "width": 1057.3,
       "height": 248.0,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -156,10 +164,10 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "grp-grp-tier2",
       "type": "rectangle",
-      "x": 1110.3,
+      "x": 56.0,
       "y": 36.0,
-      "width": 611.3,
-      "height": 154.4,
+      "width": 1788.0,
+      "height": 259.2,
       "angle": 0,
       "strokeColor": "#c2255c",
       "backgroundColor": "#f8f9fa",
@@ -185,9 +193,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "grp-title-grp-tier2",
       "type": "text",
-      "x": 1122.3,
+      "x": 68.0,
       "y": 46.0,
-      "width": 194.9,
+      "width": 308.6,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#c2255c",
@@ -208,8 +216,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Tier 2: Opt-in Sync (v2)",
-      "originalText": "Tier 2: Opt-in Sync (v2)",
+      "text": "Tier 2: ToS-Compliant Sync (v2 Opt-in)",
+      "originalText": "Tier 2: ToS-Compliant Sync (v2 Opt-in)",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "left",
@@ -221,9 +229,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "grp-grp-badge",
       "type": "rectangle",
-      "x": 1116.3,
+      "x": 1175.3,
       "y": 105.2,
-      "width": 970.6,
+      "width": 1038.7,
       "height": 201.2,
       "angle": 0,
       "strokeColor": "#e8590c",
@@ -250,7 +258,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "grp-title-grp-badge",
       "type": "text",
-      "x": 1128.3,
+      "x": 1187.3,
       "y": 115.2,
       "width": 227.4,
       "height": 17.5,
@@ -287,7 +295,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "id": "t-logs",
       "type": "rectangle",
       "x": 80.0,
-      "y": 149.2,
+      "y": 91.2,
       "width": 260.0,
       "height": 64.0,
       "angle": 0,
@@ -329,7 +337,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "id": "t-logs-text",
       "type": "text",
       "x": 94.0,
-      "y": 161.2,
+      "y": 103.2,
       "width": 232.0,
       "height": 40.0,
       "angle": 0,
@@ -366,7 +374,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "type": "rectangle",
       "x": 450.0,
       "y": 91.2,
-      "width": 213.6,
+      "width": 269.3,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#c92a2a",
@@ -408,7 +416,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "type": "text",
       "x": 464.0,
       "y": 103.2,
-      "width": 185.6,
+      "width": 241.3,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -429,8 +437,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Guard: Gemini 30d/50\nRetention Auto-Purge",
-      "originalText": "Guard: Gemini 30d/50\nRetention Auto-Purge",
+      "text": "Guard: Gemini 30d/50 Purge\n+ Hash 3-Step Mapping",
+      "originalText": "Guard: Gemini 30d/50 Purge\n+ Hash 3-Step Mapping",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -442,7 +450,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-warn-claude",
       "type": "rectangle",
-      "x": 454.6,
+      "x": 482.5,
       "y": 207.2,
       "width": 204.3,
       "height": 64.0,
@@ -484,7 +492,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-warn-claude-text",
       "type": "text",
-      "x": 468.6,
+      "x": 496.5,
       "y": 219.2,
       "width": 176.3,
       "height": 40.0,
@@ -520,9 +528,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-norm",
       "type": "rectangle",
-      "x": 773.6,
+      "x": 829.3,
       "y": 149.2,
-      "width": 250.7,
+      "width": 260.0,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#6741d9",
@@ -570,9 +578,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-norm-text",
       "type": "text",
-      "x": 787.6,
+      "x": 843.3,
       "y": 161.2,
-      "width": 222.7,
+      "width": 232.0,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -593,8 +601,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Normalized SQLite\n(Tokens & Metadata Only)",
-      "originalText": "Normalized SQLite\n(Tokens & Metadata Only)",
+      "text": "SQLite (Metadata Only)\n+ Memory-Only 80c Preview",
+      "originalText": "SQLite (Metadata Only)\n+ Memory-Only 80c Preview",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -606,7 +614,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-optin",
       "type": "diamond",
-      "x": 1134.3,
+      "x": 1207.1,
       "y": 80.0,
       "width": 225.7,
       "height": 86.4,
@@ -644,13 +652,13 @@ reconcile ^edge-8-t-probe-to-t-verified-label
         }
       ],
       "updated": 1,
-      "link": "[[concepts/two-tier-telemetry-accuracy]]",
+      "link": "[[sources/oauth-tos-constraints]]",
       "locked": false
     },
     {
       "id": "t-optin-text",
       "type": "text",
-      "x": 1177.5,
+      "x": 1250.4,
       "y": 103.2,
       "width": 139.2,
       "height": 40.0,
@@ -673,8 +681,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "v2 Official API\n/ OAuth Opt-in?",
-      "originalText": "v2 Official API\n/ OAuth Opt-in?",
+      "text": "v2 Legal Bridge\nOpt-in Enabled?",
+      "originalText": "v2 Legal Bridge\nOpt-in Enabled?",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -686,9 +694,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-probe",
       "type": "rectangle",
-      "x": 1474.7,
+      "x": 1560.0,
       "y": 91.2,
-      "width": 222.9,
+      "width": 260.0,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#0c8599",
@@ -717,20 +725,24 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           "type": "arrow"
         },
         {
-          "id": "edge-8-t-probe-to-t-verified",
+          "id": "edge-8-t-warn-tos-to-t-probe",
+          "type": "arrow"
+        },
+        {
+          "id": "edge-9-t-probe-to-t-verified",
           "type": "arrow"
         }
       ],
       "updated": 1,
-      "link": "[[concepts/two-tier-telemetry-accuracy]]",
+      "link": "[[sources/oauth-tos-constraints]]",
       "locked": false
     },
     {
       "id": "t-probe-text",
       "type": "text",
-      "x": 1488.7,
+      "x": 1574.0,
       "y": 103.2,
-      "width": 194.9,
+      "width": 232.0,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -751,8 +763,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Official Quota Sync\n(Shared Web+CLI Pool)",
-      "originalText": "Official Quota Sync\n(Shared Web+CLI Pool)",
+      "text": "Claude Statusline stdin /\nCodex Probe / GCP API",
+      "originalText": "Claude Statusline stdin /\nCodex Probe / GCP API",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -762,11 +774,85 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "autoResize": true
     },
     {
+      "id": "t-warn-tos",
+      "type": "rectangle",
+      "x": 80.0,
+      "y": 207.2,
+      "width": 260.0,
+      "height": 64.0,
+      "angle": 0,
+      "strokeColor": "#c92a2a",
+      "backgroundColor": "#ffe3e3",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 786658016,
+      "version": 1,
+      "versionNonce": 786658017,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "t-warn-tos-text",
+          "type": "text"
+        },
+        {
+          "id": "edge-8-t-warn-tos-to-t-probe",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": "[[sources/oauth-tos-constraints]]",
+      "locked": false
+    },
+    {
+      "id": "t-warn-tos-text",
+      "type": "text",
+      "x": 94.0,
+      "y": 219.2,
+      "width": 232.0,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 873405299,
+      "version": 1,
+      "versionNonce": 873405300,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "text": "Policy Guard: No Consumer\nOAuth Scraping / Secrets",
+      "originalText": "Policy Guard: No Consumer\nOAuth Scraping / Secrets",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "t-warn-tos",
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
       "id": "t-exact",
       "type": "rectangle",
-      "x": 1140.3,
+      "x": 1199.3,
       "y": 218.4,
-      "width": 213.6,
+      "width": 241.4,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#2f9e44",
@@ -802,9 +888,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-exact-text",
       "type": "text",
-      "x": 1154.3,
+      "x": 1213.3,
       "y": 230.4,
-      "width": 185.6,
+      "width": 213.4,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -825,8 +911,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Badge: Exact Local\n(Turns, Cache, Cost)",
-      "originalText": "Badge: Exact Local\n(Turns, Cache, Cost)",
+      "text": "Badge: Exact Local\n(API Reqs, Turns, Cost)",
+      "originalText": "Badge: Exact Local\n(API Reqs, Turns, Cost)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -838,9 +924,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-est",
       "type": "rectangle",
-      "x": 1470.0,
+      "x": 1550.7,
       "y": 207.2,
-      "width": 232.2,
+      "width": 278.6,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#c92a2a",
@@ -876,9 +962,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-est-text",
       "type": "text",
-      "x": 1484.0,
+      "x": 1564.7,
       "y": 219.2,
-      "width": 204.2,
+      "width": 250.6,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -899,8 +985,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Badge: Estimated Block\n(5h / Daily CLI Cap)",
-      "originalText": "Badge: Estimated Block\n(5h / Daily CLI Cap)",
+      "text": "Adaptive Baseline\n(Countdown, Cost, Peak Bar)",
+      "originalText": "Adaptive Baseline\n(Countdown, Cost, Peak Bar)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -912,7 +998,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-verified",
       "type": "rectangle",
-      "x": 1812.2,
+      "x": 1939.3,
       "y": 149.2,
       "width": 250.7,
       "height": 64.0,
@@ -939,7 +1025,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           "type": "text"
         },
         {
-          "id": "edge-8-t-probe-to-t-verified",
+          "id": "edge-9-t-probe-to-t-verified",
           "type": "arrow"
         }
       ],
@@ -950,7 +1036,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "t-verified-text",
       "type": "text",
-      "x": 1826.2,
+      "x": 1953.3,
       "y": 161.2,
       "width": 222.7,
       "height": 40.0,
@@ -987,9 +1073,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "id": "edge-0-t-logs-to-t-warn-gemini",
       "type": "arrow",
       "x": 340.0,
-      "y": 181.2,
+      "y": 123.2,
       "width": 110.0,
-      "height": 58.0,
+      "height": 0.0,
       "angle": 0,
       "strokeColor": "#495057",
       "backgroundColor": "transparent",
@@ -1023,7 +1109,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
         ],
         [
           110.0,
-          -58.0
+          0.0
         ]
       ],
       "lastCommittedPoint": null,
@@ -1045,7 +1131,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "id": "edge-0-t-logs-to-t-warn-gemini-label",
       "type": "text",
       "x": 338.1,
-      "y": 143.4,
+      "y": 114.5,
       "width": 113.7,
       "height": 17.5,
       "angle": 0,
@@ -1081,9 +1167,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "id": "edge-1-t-logs-to-t-warn-claude",
       "type": "arrow",
       "x": 340.0,
-      "y": 181.2,
-      "width": 114.6,
-      "height": 58.0,
+      "y": 123.2,
+      "width": 142.5,
+      "height": 116.0,
       "angle": 0,
       "strokeColor": "#495057",
       "backgroundColor": "transparent",
@@ -1116,8 +1202,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          114.6,
-          58.0
+          142.5,
+          116.0
         ]
       ],
       "lastCommittedPoint": null,
@@ -1138,8 +1224,8 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-1-t-logs-to-t-warn-claude-label",
       "type": "text",
-      "x": 348.6,
-      "y": 201.4,
+      "x": 362.6,
+      "y": 172.4,
       "width": 97.4,
       "height": 17.5,
       "angle": 0,
@@ -1174,7 +1260,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-2-t-warn-gemini-to-t-norm",
       "type": "arrow",
-      "x": 663.6,
+      "x": 719.3,
       "y": 123.2,
       "width": 110.0,
       "height": 58.0,
@@ -1232,7 +1318,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-2-t-warn-gemini-to-t-norm-label",
       "type": "text",
-      "x": 690.2,
+      "x": 745.9,
       "y": 143.4,
       "width": 56.8,
       "height": 17.5,
@@ -1268,9 +1354,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-3-t-warn-claude-to-t-norm",
       "type": "arrow",
-      "x": 659.0,
+      "x": 686.8,
       "y": 239.2,
-      "width": 114.6,
+      "width": 142.5,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1304,7 +1390,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          114.6,
+          142.5,
           -58.0
         ]
       ],
@@ -1326,7 +1412,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-3-t-warn-claude-to-t-norm-label",
       "type": "text",
-      "x": 687.9,
+      "x": 729.6,
       "y": 201.4,
       "width": 56.8,
       "height": 17.5,
@@ -1362,9 +1448,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-4-t-norm-to-t-exact",
       "type": "arrow",
-      "x": 1024.3,
+      "x": 1089.3,
       "y": 181.2,
-      "width": 116.0,
+      "width": 110.0,
       "height": 69.2,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1398,7 +1484,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          116.0,
+          110.0,
           69.2
         ]
       ],
@@ -1420,7 +1506,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-4-t-norm-to-t-exact-label",
       "type": "text",
-      "x": 1049.8,
+      "x": 1111.8,
       "y": 207.0,
       "width": 65.0,
       "height": 17.5,
@@ -1456,9 +1542,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-5-t-norm-to-t-optin",
       "type": "arrow",
-      "x": 1024.3,
+      "x": 1089.3,
       "y": 181.2,
-      "width": 110.0,
+      "width": 117.8,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1492,7 +1578,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          110.0,
+          117.8,
           -58.0
         ]
       ],
@@ -1514,7 +1600,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-5-t-norm-to-t-optin-label",
       "type": "text",
-      "x": 1034.6,
+      "x": 1103.5,
       "y": 143.4,
       "width": 89.3,
       "height": 17.5,
@@ -1550,9 +1636,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-6-t-optin-to-t-est",
       "type": "arrow",
-      "x": 1360.0,
+      "x": 1432.8,
       "y": 123.2,
-      "width": 110.0,
+      "width": 117.8,
       "height": 116.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1586,7 +1672,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          110.0,
+          117.8,
           116.0
         ]
       ],
@@ -1608,7 +1694,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-6-t-optin-to-t-est-label",
       "type": "text",
-      "x": 1354.1,
+      "x": 1430.8,
       "y": 172.4,
       "width": 121.8,
       "height": 17.5,
@@ -1644,9 +1730,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-7-t-optin-to-t-probe",
       "type": "arrow",
-      "x": 1360.0,
+      "x": 1432.8,
       "y": 123.2,
-      "width": 114.7,
+      "width": 127.1,
       "height": 0.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1680,7 +1766,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          114.7,
+          127.1,
           0.0
         ]
       ],
@@ -1702,7 +1788,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
     {
       "id": "edge-7-t-optin-to-t-probe-label",
       "type": "text",
-      "x": 1384.8,
+      "x": 1463.9,
       "y": 114.5,
       "width": 65.0,
       "height": 17.5,
@@ -1736,11 +1822,105 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "autoResize": true
     },
     {
-      "id": "edge-8-t-probe-to-t-verified",
+      "id": "edge-8-t-warn-tos-to-t-probe",
       "type": "arrow",
-      "x": 1697.6,
+      "x": 340.0,
+      "y": 239.2,
+      "width": 1220.0,
+      "height": 116.0,
+      "angle": 0,
+      "strokeColor": "#495057",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dotted",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1093520828,
+      "version": 1,
+      "versionNonce": 1093520829,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "edge-8-t-warn-tos-to-t-probe-label",
+          "type": "text"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1220.0,
+          -116.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "t-warn-tos",
+        "focus": 0,
+        "gap": 4
+      },
+      "endBinding": {
+        "elementId": "t-probe",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "edge-8-t-warn-tos-to-t-probe-label",
+      "type": "text",
+      "x": 917.5,
+      "y": 172.4,
+      "width": 65.0,
+      "height": 17.5,
+      "angle": 0,
+      "strokeColor": "#343a40",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1640518903,
+      "version": 1,
+      "versionNonce": 1640518904,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "text": "enforces",
+      "originalText": "enforces",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "edge-8-t-warn-tos-to-t-probe",
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
+      "id": "edge-9-t-probe-to-t-verified",
+      "type": "arrow",
+      "x": 1820.0,
       "y": 123.2,
-      "width": 114.6,
+      "width": 119.3,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1755,13 +1935,13 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "roundness": {
         "type": 2
       },
-      "seed": 1896944288,
+      "seed": 1784870988,
       "version": 1,
-      "versionNonce": 1896944289,
+      "versionNonce": 1784870989,
       "isDeleted": false,
       "boundElements": [
         {
-          "id": "edge-8-t-probe-to-t-verified-label",
+          "id": "edge-9-t-probe-to-t-verified-label",
           "type": "text"
         }
       ],
@@ -1774,7 +1954,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
           0
         ],
         [
-          114.6,
+          119.3,
           58.0
         ]
       ],
@@ -1794,9 +1974,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "elbowed": false
     },
     {
-      "id": "edge-8-t-probe-to-t-verified-label",
+      "id": "edge-9-t-probe-to-t-verified-label",
       "type": "text",
-      "x": 1718.3,
+      "x": 1843.1,
       "y": 143.4,
       "width": 73.1,
       "height": 17.5,
@@ -1811,9 +1991,9 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "groupIds": [],
       "frameId": null,
       "roundness": null,
-      "seed": 166937176,
+      "seed": 1794415476,
       "version": 1,
-      "versionNonce": 166937177,
+      "versionNonce": 1794415477,
       "isDeleted": false,
       "boundElements": null,
       "updated": 1,
@@ -1825,7 +2005,7 @@ reconcile ^edge-8-t-probe-to-t-verified-label
       "fontFamily": 1,
       "textAlign": "center",
       "verticalAlign": "middle",
-      "containerId": "edge-8-t-probe-to-t-verified",
+      "containerId": "edge-9-t-probe-to-t-verified",
       "lineHeight": 1.25,
       "autoResize": true
     }

@@ -27,3 +27,12 @@
 
 ## [2026-11-27] update | PRD v1.1 및 핵심 개념 문서 4건 개정
 - 리뷰 P0(4)·P1(7)·P2(3) 결정 반영: Adaptive Baseline, 턴 3분류, 정규화/예외, V_adj, 노치 UX
+
+## [2026-11-27] ingest | 3사 OAuth 정책 및 ToS 제약 근거(raw/06-oauth-tos-constraints.md) 인제스트
+- 소비자 OAuth 스크래핑 금지, v2.0 Claude Statusline Bridge·GCP OAuth·Codex CLI 프로브 확정
+
+## [2026-11-27] visualize | Excalidraw 다이어그램 2종 v1.2 아키텍처 동기화
+- system-architecture, telemetry-pipeline-and-accuracy 재생성 및 검증
+
+## [2026-11-27] update | PRD v1.2 (Design-Ready Freeze) 확정
+- 2차 리뷰 P0(3)·P1(4) 및 OAuth/ToS 반영 완료

@@ -1,5 +1,5 @@
 ---
-id: system-architecture-agents-usage-mac
+id: system-architecture-agents-usage-mac-v1-2
 type: excalidraw
 excalidraw-plugin: parsed
 tags:
@@ -18,7 +18,7 @@ sources:
 
 # Excalidraw Data
 ## Text Elements
-Local CLI Agents (v1) ^grp-title-grp-cli
+Local CLI Logs (v1) ^grp-title-grp-cli
 
 Non-Sandboxed Main App Engine ^grp-title-grp-core
 
@@ -27,53 +27,53 @@ Local Storage & App Group ^grp-title-grp-store
 macOS Presentation Surfaces ^grp-title-grp-ui
 
 Gemini CLI
-(~/.gemini/tmp/...) ^n-gemini-text
+(~/.gemini/tmp/... JSON) ^n-gemini-text
 
 Claude Code
-(~/.claude/projects) ^n-claude-text
+(~/.claude/projects JSONL) ^n-claude-text
 
 Codex CLI
-(~/.codex/sessions) ^n-codex-text
+(~/.codex/sessions JSONL) ^n-codex-text
 
-FSEvents Watcher
-& Incremental Parser ^n-watcher-text
+FSEvents + Wake Catch-up
+Dual Parser (Offset / Delta) ^n-watcher-text
 
-Prompt Efficiency
+3-Tier Turn Efficiency
 & Cost Engine ^n-eff-text
 
-Plan ROI Recommender
-(v2 Engine) ^n-roi-text
+Plan ROI & Legal Tier 2
+(v2.0 Engine) ^n-roi-text
 
-Local SQLite (GRDB)
-+ Pricing JSON Catalog ^n-sqlite-text
+SQLite (Turns + Daily Rollup)
++ Opt-in Pricing Catalog ^n-sqlite-text
 
-App Group Container
-(widget-snapshot.json) ^n-appgroup-text
+App Group Snapshot
+(widget-snapshot.json, 0B prompt) ^n-appgroup-text
 
-MenuBarExtra Popover
-(Quota + Burn Rate) ^n-menubar-text
+Notch-Safe MenuBarExtra
+(Adaptive Baseline Popover) ^n-menubar-text
 
-Dashboard Window
-(Swift Charts + Coaching) ^n-dashboard-text
+Dashboard Window (EN/KO)
+(Charts + Memory 80c Preview) ^n-dashboard-text
 
 WidgetKit Extension
 (Sandboxed, 40-70/day) ^n-widget-text
 
-JSON ^edge-0-n-gemini-to-n-watcher-label
+mtime delta ^edge-0-n-gemini-to-n-watcher-label
 
-JSONL ^edge-1-n-claude-to-n-watcher-label
+byte_offset ^edge-1-n-claude-to-n-watcher-label
 
-JSONL ^edge-2-n-codex-to-n-watcher-label
+byte_offset ^edge-2-n-codex-to-n-watcher-label
 
-upsert turns ^edge-3-n-watcher-to-n-sqlite-label
+upsert + rollup ^edge-3-n-watcher-to-n-sqlite-label
 
-read metrics ^edge-4-n-sqlite-to-n-eff-label
+turn metrics ^edge-4-n-sqlite-to-n-eff-label
 
 V_api & V_adj ^edge-5-n-eff-to-n-roi-label
 
 live state ^edge-6-n-eff-to-n-menubar-label
 
-turn analytics ^edge-7-n-eff-to-n-dashboard-label
+scores & coaching ^edge-7-n-eff-to-n-dashboard-label
 
 plan advice ^edge-8-n-roi-to-n-dashboard-label
 
@@ -85,7 +85,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
 ^n-gemini: [[entities/gemini-cli]]
 ^n-claude: [[entities/claude-code]]
 ^n-codex: [[entities/codex-cli]]
-^n-watcher: [[concepts/two-tier-telemetry-accuracy]]
+^n-watcher: [[concepts/macos-menubar-widget-architecture]]
 ^n-eff: [[concepts/prompt-efficiency-scoring]]
 ^n-roi: [[concepts/plan-roi-recommendation]]
 ^n-sqlite: [[sources/pricing-quotas-2026]]
@@ -107,7 +107,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "type": "rectangle",
       "x": 56.0,
       "y": 36.0,
-      "width": 261.6,
+      "width": 317.3,
       "height": 364.0,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -136,7 +136,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "type": "text",
       "x": 68.0,
       "y": 46.0,
-      "width": 170.5,
+      "width": 154.3,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -157,8 +157,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Local CLI Agents (v1)",
-      "originalText": "Local CLI Agents (v1)",
+      "text": "Local CLI Logs (v1)",
+      "originalText": "Local CLI Logs (v1)",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "left",
@@ -170,9 +170,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-grp-core",
       "type": "rectangle",
-      "x": 379.6,
+      "x": 435.3,
       "y": 36.0,
-      "width": 1278.9,
+      "width": 1557.1,
       "height": 248.0,
       "angle": 0,
       "strokeColor": "#6741d9",
@@ -199,7 +199,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-title-grp-core",
       "type": "text",
-      "x": 391.6,
+      "x": 447.3,
       "y": 46.0,
       "width": 235.5,
       "height": 17.5,
@@ -235,9 +235,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-grp-store",
       "type": "rectangle",
-      "x": 703.2,
+      "x": 833.1,
       "y": 152.0,
-      "width": 622.4,
+      "width": 789.3,
       "height": 190.0,
       "angle": 0,
       "strokeColor": "#2f9e44",
@@ -264,7 +264,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-title-grp-store",
       "type": "text",
-      "x": 715.2,
+      "x": 845.1,
       "y": 162.0,
       "width": 203.0,
       "height": 17.5,
@@ -300,9 +300,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-grp-ui",
       "type": "rectangle",
-      "x": 1387.6,
+      "x": 1684.4,
       "y": 152.0,
-      "width": 650.2,
+      "width": 733.7,
       "height": 248.0,
       "angle": 0,
       "strokeColor": "#0c8599",
@@ -329,7 +329,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "grp-title-grp-ui",
       "type": "text",
-      "x": 1399.6,
+      "x": 1696.4,
       "y": 162.0,
       "width": 219.2,
       "height": 17.5,
@@ -365,9 +365,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-gemini",
       "type": "rectangle",
-      "x": 84.6,
+      "x": 89.3,
       "y": 80.0,
-      "width": 204.3,
+      "width": 250.7,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -403,9 +403,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-gemini-text",
       "type": "text",
-      "x": 98.6,
+      "x": 103.3,
       "y": 92.0,
-      "width": 176.3,
+      "width": 222.7,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -426,8 +426,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Gemini CLI\n(~/.gemini/tmp/...)",
-      "originalText": "Gemini CLI\n(~/.gemini/tmp/...)",
+      "text": "Gemini CLI\n(~/.gemini/tmp/... JSON)",
+      "originalText": "Gemini CLI\n(~/.gemini/tmp/... JSON)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -441,7 +441,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "type": "rectangle",
       "x": 80.0,
       "y": 196.0,
-      "width": 213.6,
+      "width": 269.3,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -479,7 +479,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "type": "text",
       "x": 94.0,
       "y": 208.0,
-      "width": 185.6,
+      "width": 241.3,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -500,8 +500,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Claude Code\n(~/.claude/projects)",
-      "originalText": "Claude Code\n(~/.claude/projects)",
+      "text": "Claude Code\n(~/.claude/projects JSONL)",
+      "originalText": "Claude Code\n(~/.claude/projects JSONL)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -513,9 +513,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-codex",
       "type": "rectangle",
-      "x": 84.6,
+      "x": 84.7,
       "y": 312.0,
-      "width": 204.3,
+      "width": 260.0,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#1971c2",
@@ -551,9 +551,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-codex-text",
       "type": "text",
-      "x": 98.6,
+      "x": 98.7,
       "y": 324.0,
-      "width": 176.3,
+      "width": 232.0,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -574,8 +574,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Codex CLI\n(~/.codex/sessions)",
-      "originalText": "Codex CLI\n(~/.codex/sessions)",
+      "text": "Codex CLI\n(~/.codex/sessions JSONL)",
+      "originalText": "Codex CLI\n(~/.codex/sessions JSONL)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -587,9 +587,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-watcher",
       "type": "rectangle",
-      "x": 403.6,
+      "x": 459.3,
       "y": 196.0,
-      "width": 213.6,
+      "width": 287.8,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#6741d9",
@@ -631,15 +631,15 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
         }
       ],
       "updated": 1,
-      "link": "[[concepts/two-tier-telemetry-accuracy]]",
+      "link": "[[concepts/macos-menubar-widget-architecture]]",
       "locked": false
     },
     {
       "id": "n-watcher-text",
       "type": "text",
-      "x": 417.6,
+      "x": 473.3,
       "y": 208.0,
-      "width": 185.6,
+      "width": 259.8,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -660,8 +660,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "FSEvents Watcher\n& Incremental Parser",
-      "originalText": "FSEvents Watcher\n& Incremental Parser",
+      "text": "FSEvents + Wake Catch-up\nDual Parser (Offset / Delta)",
+      "originalText": "FSEvents + Wake Catch-up\nDual Parser (Offset / Delta)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -673,9 +673,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-eff",
       "type": "rectangle",
-      "x": 1092.6,
+      "x": 1315.2,
       "y": 138.0,
-      "width": 185.8,
+      "width": 232.2,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#2f9e44",
@@ -723,9 +723,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-eff-text",
       "type": "text",
-      "x": 1106.6,
+      "x": 1329.2,
       "y": 150.0,
-      "width": 157.8,
+      "width": 204.2,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -746,8 +746,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Prompt Efficiency\n& Cost Engine",
-      "originalText": "Prompt Efficiency\n& Cost Engine",
+      "text": "3-Tier Turn Efficiency\n& Cost Engine",
+      "originalText": "3-Tier Turn Efficiency\n& Cost Engine",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -759,9 +759,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-roi",
       "type": "rectangle",
-      "x": 1420.9,
+      "x": 1727.0,
       "y": 80.0,
-      "width": 213.6,
+      "width": 241.4,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#e8590c",
@@ -801,9 +801,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-roi-text",
       "type": "text",
-      "x": 1434.9,
+      "x": 1741.0,
       "y": 92.0,
-      "width": 185.6,
+      "width": 213.4,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -824,8 +824,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Plan ROI Recommender\n(v2 Engine)",
-      "originalText": "Plan ROI Recommender\n(v2 Engine)",
+      "text": "Plan ROI & Legal Tier 2\n(v2.0 Engine)",
+      "originalText": "Plan ROI & Legal Tier 2\n(v2.0 Engine)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -837,9 +837,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-sqlite",
       "type": "rectangle",
-      "x": 727.2,
+      "x": 857.1,
       "y": 196.0,
-      "width": 232.2,
+      "width": 297.1,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#0c8599",
@@ -883,9 +883,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-sqlite-text",
       "type": "text",
-      "x": 741.2,
+      "x": 871.1,
       "y": 208.0,
-      "width": 204.2,
+      "width": 269.1,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -906,8 +906,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Local SQLite (GRDB)\n+ Pricing JSON Catalog",
-      "originalText": "Local SQLite (GRDB)\n+ Pricing JSON Catalog",
+      "text": "SQLite (Turns + Daily Rollup)\n+ Opt-in Pricing Catalog",
+      "originalText": "SQLite (Turns + Daily Rollup)\n+ Opt-in Pricing Catalog",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -919,9 +919,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-appgroup",
       "type": "rectangle",
-      "x": 1069.4,
+      "x": 1264.2,
       "y": 254.0,
-      "width": 232.2,
+      "width": 334.2,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#0c8599",
@@ -961,9 +961,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-appgroup-text",
       "type": "text",
-      "x": 1083.4,
+      "x": 1278.2,
       "y": 266.0,
-      "width": 204.2,
+      "width": 306.2,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -984,8 +984,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "App Group Container\n(widget-snapshot.json)",
-      "originalText": "App Group Container\n(widget-snapshot.json)",
+      "text": "App Group Snapshot\n(widget-snapshot.json, 0B prompt)",
+      "originalText": "App Group Snapshot\n(widget-snapshot.json, 0B prompt)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -997,9 +997,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-menubar",
       "type": "rectangle",
-      "x": 1420.9,
+      "x": 1708.4,
       "y": 196.0,
-      "width": 213.6,
+      "width": 278.6,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#6741d9",
@@ -1035,9 +1035,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-menubar-text",
       "type": "text",
-      "x": 1434.9,
+      "x": 1722.4,
       "y": 208.0,
-      "width": 185.6,
+      "width": 250.6,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -1058,8 +1058,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "MenuBarExtra Popover\n(Quota + Burn Rate)",
-      "originalText": "MenuBarExtra Popover\n(Quota + Burn Rate)",
+      "text": "Notch-Safe MenuBarExtra\n(Adaptive Baseline Popover)",
+      "originalText": "Notch-Safe MenuBarExtra\n(Adaptive Baseline Popover)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1071,9 +1071,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-dashboard",
       "type": "rectangle",
-      "x": 1753.8,
+      "x": 2097.0,
       "y": 196.0,
-      "width": 260.0,
+      "width": 297.1,
       "height": 64.0,
       "angle": 0,
       "strokeColor": "#e8590c",
@@ -1113,9 +1113,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-dashboard-text",
       "type": "text",
-      "x": 1767.8,
+      "x": 2111.0,
       "y": 208.0,
-      "width": 232.0,
+      "width": 269.1,
       "height": 40.0,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -1136,8 +1136,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Dashboard Window\n(Swift Charts + Coaching)",
-      "originalText": "Dashboard Window\n(Swift Charts + Coaching)",
+      "text": "Dashboard Window (EN/KO)\n(Charts + Memory 80c Preview)",
+      "originalText": "Dashboard Window (EN/KO)\n(Charts + Memory 80c Preview)",
       "fontSize": 16,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1149,7 +1149,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-widget",
       "type": "rectangle",
-      "x": 1411.6,
+      "x": 1731.6,
       "y": 312.0,
       "width": 232.2,
       "height": 64.0,
@@ -1187,7 +1187,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "n-widget-text",
       "type": "text",
-      "x": 1425.6,
+      "x": 1745.6,
       "y": 324.0,
       "width": 204.2,
       "height": 40.0,
@@ -1223,9 +1223,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-0-n-gemini-to-n-watcher",
       "type": "arrow",
-      "x": 288.9,
+      "x": 340.0,
       "y": 112.0,
-      "width": 114.7,
+      "width": 119.3,
       "height": 116.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1259,7 +1259,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          114.7,
+          119.3,
           116.0
         ]
       ],
@@ -1281,9 +1281,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-0-n-gemini-to-n-watcher-label",
       "type": "text",
-      "x": 326.3,
+      "x": 355.0,
       "y": 161.2,
-      "width": 40.0,
+      "width": 89.3,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#343a40",
@@ -1304,8 +1304,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "JSON",
-      "originalText": "JSON",
+      "text": "mtime delta",
+      "originalText": "mtime delta",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1317,7 +1317,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-1-n-claude-to-n-watcher",
       "type": "arrow",
-      "x": 293.6,
+      "x": 349.3,
       "y": 228.0,
       "width": 110.0,
       "height": 0.0,
@@ -1375,9 +1375,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-1-n-claude-to-n-watcher-label",
       "type": "text",
-      "x": 328.3,
+      "x": 359.7,
       "y": 219.2,
-      "width": 40.6,
+      "width": 89.3,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#343a40",
@@ -1398,8 +1398,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "JSONL",
-      "originalText": "JSONL",
+      "text": "byte_offset",
+      "originalText": "byte_offset",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1411,7 +1411,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-2-n-codex-to-n-watcher",
       "type": "arrow",
-      "x": 288.9,
+      "x": 344.6,
       "y": 344.0,
       "width": 114.7,
       "height": 116.0,
@@ -1469,9 +1469,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-2-n-codex-to-n-watcher-label",
       "type": "text",
-      "x": 326.0,
+      "x": 357.4,
       "y": 277.2,
-      "width": 40.6,
+      "width": 89.3,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#343a40",
@@ -1492,8 +1492,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "JSONL",
-      "originalText": "JSONL",
+      "text": "byte_offset",
+      "originalText": "byte_offset",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1505,7 +1505,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-3-n-watcher-to-n-sqlite",
       "type": "arrow",
-      "x": 617.2,
+      "x": 747.1,
       "y": 228.0,
       "width": 110.0,
       "height": 0.0,
@@ -1563,9 +1563,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-3-n-watcher-to-n-sqlite-label",
       "type": "text",
-      "x": 623.5,
+      "x": 741.2,
       "y": 219.2,
-      "width": 97.4,
+      "width": 121.8,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#343a40",
@@ -1586,8 +1586,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "upsert turns",
-      "originalText": "upsert turns",
+      "text": "upsert + rollup",
+      "originalText": "upsert + rollup",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1599,9 +1599,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-4-n-sqlite-to-n-eff",
       "type": "arrow",
-      "x": 959.4,
+      "x": 1154.2,
       "y": 228.0,
-      "width": 133.2,
+      "width": 161.0,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1635,7 +1635,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          133.2,
+          161.0,
           -58.0
         ]
       ],
@@ -1657,7 +1657,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-4-n-sqlite-to-n-eff-label",
       "type": "text",
-      "x": 977.3,
+      "x": 1186.0,
       "y": 190.2,
       "width": 97.4,
       "height": 17.5,
@@ -1680,8 +1680,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "read metrics",
-      "originalText": "read metrics",
+      "text": "turn metrics",
+      "originalText": "turn metrics",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1693,9 +1693,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-5-n-eff-to-n-roi",
       "type": "arrow",
-      "x": 1278.4,
+      "x": 1547.4,
       "y": 170.0,
-      "width": 142.5,
+      "width": 179.6,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1729,7 +1729,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          142.5,
+          179.6,
           -58.0
         ]
       ],
@@ -1751,7 +1751,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-5-n-eff-to-n-roi-label",
       "type": "text",
-      "x": 1296.9,
+      "x": 1584.4,
       "y": 132.2,
       "width": 105.6,
       "height": 17.5,
@@ -1787,9 +1787,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-6-n-eff-to-n-menubar",
       "type": "arrow",
-      "x": 1278.4,
+      "x": 1547.4,
       "y": 170.0,
-      "width": 142.5,
+      "width": 161.0,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1823,7 +1823,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          142.5,
+          161.0,
           58.0
         ]
       ],
@@ -1845,7 +1845,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-6-n-eff-to-n-menubar-label",
       "type": "text",
-      "x": 1309.1,
+      "x": 1587.3,
       "y": 190.2,
       "width": 81.2,
       "height": 17.5,
@@ -1881,9 +1881,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-7-n-eff-to-n-dashboard",
       "type": "arrow",
-      "x": 1278.4,
+      "x": 1547.4,
       "y": 170.0,
-      "width": 475.4,
+      "width": 549.6,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -1917,7 +1917,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          475.4,
+          549.6,
           58.0
         ]
       ],
@@ -1939,9 +1939,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-7-n-eff-to-n-dashboard-label",
       "type": "text",
-      "x": 1459.3,
+      "x": 1753.2,
       "y": 190.2,
-      "width": 113.7,
+      "width": 138.0,
       "height": 17.5,
       "angle": 0,
       "strokeColor": "#343a40",
@@ -1962,8 +1962,8 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "turn analytics",
-      "originalText": "turn analytics",
+      "text": "scores & coaching",
+      "originalText": "scores & coaching",
       "fontSize": 14,
       "fontFamily": 1,
       "textAlign": "center",
@@ -1975,9 +1975,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-8-n-roi-to-n-dashboard",
       "type": "arrow",
-      "x": 1634.5,
+      "x": 1968.4,
       "y": 112.0,
-      "width": 119.3,
+      "width": 128.6,
       "height": 116.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -2011,7 +2011,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          119.3,
+          128.6,
           116.0
         ]
       ],
@@ -2033,7 +2033,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-8-n-roi-to-n-dashboard-label",
       "type": "text",
-      "x": 1649.5,
+      "x": 1988.0,
       "y": 161.2,
       "width": 89.3,
       "height": 17.5,
@@ -2069,7 +2069,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-9-n-sqlite-to-n-appgroup",
       "type": "arrow",
-      "x": 959.4,
+      "x": 1154.2,
       "y": 228.0,
       "width": 110.0,
       "height": 58.0,
@@ -2127,7 +2127,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-9-n-sqlite-to-n-appgroup-label",
       "type": "text",
-      "x": 953.5,
+      "x": 1148.3,
       "y": 248.2,
       "width": 121.8,
       "height": 17.5,
@@ -2163,9 +2163,9 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-10-n-appgroup-to-n-widget",
       "type": "arrow",
-      "x": 1301.6,
+      "x": 1598.4,
       "y": 286.0,
-      "width": 110.0,
+      "width": 133.2,
       "height": 58.0,
       "angle": 0,
       "strokeColor": "#495057",
@@ -2199,7 +2199,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
           0
         ],
         [
-          110.0,
+          133.2,
           58.0
         ]
       ],
@@ -2221,7 +2221,7 @@ read snapshot ^edge-10-n-appgroup-to-n-widget-label
     {
       "id": "edge-10-n-appgroup-to-n-widget-label",
       "type": "text",
-      "x": 1303.8,
+      "x": 1612.2,
       "y": 306.2,
       "width": 105.6,
       "height": 17.5,
