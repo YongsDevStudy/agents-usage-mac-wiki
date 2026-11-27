@@ -1,0 +1,135 @@
+name: Wiki Integrity Check
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  wiki-check:
+    name: wiki-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate wiki structure, frontmatter, links, and Excalidraw JSON
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          import sys
+          from pathlib import Path
+
+          root = Path(".")
+          wiki_dir = root / "wiki"
+          required_files = [root / "WIKI_SCHEMA.md", wiki_dir / "index.md", wiki_dir / "log.md", wiki_dir / "overview.md"]
+          errors = []
+
+          for rf in required_files:
+              if not rf.is_file():
+                  errors.append(f"Missing required file: {rf}")
+
+          REQUIRED_FM = ("id", "type", "tags", "updated")
+          WIKILINK_RE = re.compile(r"(!?)\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]")
+
+          lookup = {}
+          all_pages = sorted(wiki_dir.rglob("*.md"))
+          for p in all_pages:
+              rel = p.relative_to(wiki_dir).as_posix()
+              rel_no_md = rel[:-3] if rel.endswith(".md") else rel
+              keys = [rel, rel_no_md, p.name, p.stem]
+              if rel.endswith(".excalidraw.md"):
+                  keys.extend([rel[:-3], p.name[:-3]])
+              for k in keys:
+                  lookup.setdefault(k.lower(), p)
+
+          raw_dir = root / "raw"
+          if raw_dir.is_dir():
+              for asset in raw_dir.rglob("*"):
+                  if asset.is_file():
+                      lookup.setdefault(asset.relative_to(root).as_posix().lower(), asset)
+                      lookup.setdefault(asset.name.lower(), asset)
+
+          index_path = wiki_dir / "index.md"
+          log_path = wiki_dir / "log.md"
+          overview_path = wiki_dir / "overview.md"
+          inbound = {p: 0 for p in all_pages}
+          index_targets = set()
+
+          for p in all_pages:
+              rel = p.relative_to(root).as_posix()
+              raw = p.read_text(encoding="utf-8")
+              is_exc = p.name.lower().endswith(".excalidraw.md")
+
+              if p not in (index_path, log_path):
+                  fm_match = re.match(r"^---\s*\n(.*?)\n---\s*(?:\n|$)", raw, re.DOTALL)
+                  if not fm_match:
+                      errors.append(f"{rel}: Missing YAML frontmatter")
+                  else:
+                      keys = {}
+                      for line in fm_match.group(1).splitlines():
+                          if line and not line[0].isspace() and not line.lstrip().startswith("#") and ":" in line:
+                              k, v = line.split(":", 1)
+                              keys[k.strip()] = v.strip()
+                      missing = [k for k in REQUIRED_FM if k not in keys]
+                      if missing:
+                          errors.append(f"{rel}: Missing frontmatter keys: {', '.join(missing)}")
+
+              if is_exc:
+                  json_match = re.search(r"## Drawing\s*```json\s*(.*?)\s*```", raw, re.DOTALL)
+                  if not json_match:
+                      errors.append(f"{rel}: Missing Excalidraw Drawing JSON block")
+                  else:
+                      try:
+                          data = json.loads(json_match.group(1))
+                          if data.get("type") != "excalidraw" or "elements" not in data:
+                              errors.append(f"{rel}: Invalid Excalidraw JSON structure")
+                      except json.JSONDecodeError as exc:
+                          errors.append(f"{rel}: Invalid Excalidraw JSON ({exc})")
+
+              text = re.sub(r"^---\s*\n.*?\n---\s*\n", "", raw, count=1, flags=re.DOTALL)
+              text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+              if is_exc:
+                  text = re.sub(r"%%.*?%%", "", text, flags=re.DOTALL)
+              text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+              text = re.sub(r"`[^`\n]+`", "", text)
+
+              for _embed, target in WIKILINK_RE.findall(text):
+                  clean = target.strip().lstrip("./")
+                  if clean.lower().startswith("wiki/"):
+                      clean = clean[5:]
+                  resolved = lookup.get(clean.lower())
+                  if resolved is None:
+                      errors.append(f"{rel}: Broken wikilink [[{target}]]")
+                  elif resolved in inbound and resolved != p:
+                      if p == index_path:
+                          index_targets.add(resolved)
+                      elif p != log_path:
+                          inbound[resolved] += 1
+
+          for p in all_pages:
+              if p in (index_path, log_path):
+                  continue
+              rel = p.relative_to(root).as_posix()
+              if p not in index_targets:
+                  errors.append(f"{rel}: Not listed in wiki/index.md")
+              if p != overview_path and inbound[p] == 0:
+                  errors.append(f"{rel}: Orphan page (0 inbound links)")
+
+          print(f"Scanned {len(all_pages)} wiki pages; errors={len(errors)}")
+          for e in errors:
+              print(f"ERROR: {e}")
+          sys.exit(1 if errors else 0)
+          PY

@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: "📐 PRD v1.0 & Planning Wiki"
-    url: https://github.com/YongsDevStudy/agents-usage-mac/blob/main/wiki/syntheses/prd-agents-usage-mac.md
-    about: "기능 요구사항(FR-01~07), 아키텍처, 데이터 정확도 원칙 확인"
+    url: https://github.com/YongsDevStudy/agents-usage-mac-wiki/blob/main/wiki/syntheses/prd-agents-usage-mac.md
+    about: "제품 요구사항(FR-01~07), 아키텍처, 데이터 정확도 원칙 확인"
   - name: "🗂️ LLM Wiki Overview"
-    url: https://github.com/YongsDevStudy/agents-usage-mac/blob/main/wiki/overview.md
+    url: https://github.com/YongsDevStudy/agents-usage-mac-wiki/blob/main/wiki/overview.md
     about: "원본 근거(raw/), 엔티티, 개념 문서 및 Excalidraw 다이어그램 탐색"
+  - name: "💻 App Implementation Repo (agents-usage-mac)"
+    url: https://github.com/YongsDevStudy/agents-usage-mac
+    about: "실제 Swift/macOS 구현 코드 및 기능/버그 이슈 등록 저장소"
