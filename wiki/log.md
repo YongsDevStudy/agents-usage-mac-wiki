@@ -36,3 +36,12 @@
 
 ## [2026-11-27] update | PRD v1.2 (Design-Ready Freeze) 확정
 - 2차 리뷰 P0(3)·P1(4) 및 OAuth/ToS 반영 완료
+
+## [2026-11-27] ingest | 로컬 CLI 환경·업스트림 스키마 검증(raw/07-cli-schema-validation.md) 인제스트
+- claude 2.1.316, codex-cli 0.166.0, ~/.gemini/settings.json selectedType 실측 및 3사 스키마 계약 확정
+
+## [2026-11-27] visualize | SwiftPM 모듈 및 SQLite 9-Table ERD 다이어그램 생성
+- wiki/visuals/sqlite-erd-and-modules.excalidraw.md
+
+## [2026-11-27] update | ADR-001~005 및 기술 설계서(TDD v1.0) 작성, PRD 3차 미세 정합성 반영
+- 이슈 #3 사전 설계 게이트 및 TDD DDL/파서 계약 완성
