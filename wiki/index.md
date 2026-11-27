@@ -34,10 +34,10 @@
 
 ## Concepts
 
-- [[concepts/prompt-efficiency-scoring|프롬프트 효율 점수 모델]] — 질문(턴) 단위 6대 지표 산식, 0–100점 가중 모델, 코칭 액션 트리거
-- [[concepts/plan-roi-recommendation|요금제 ROI 추천 엔진 (v2)]] — API 환산 가치($V_{\text{api}}$), 낭비 보정 소비액($V_{\text{adj}}$), 플랜 변경 의사결정 매트릭스
-- [[concepts/two-tier-telemetry-accuracy|2계층 텔레메트리 정확도 모델]] — Tier 1(실측/추정) vs Tier 2(Opt-in 공식 동기화) 경계 및 프라이버시 원칙
-- [[concepts/macos-menubar-widget-architecture|macOS 메뉴 막대·위젯 네이티브 아키텍처]] — 최소 OS 기준, 비샌드박스+App Group, WidgetKit 리로드 제어, 공증 배포
+- [[concepts/prompt-efficiency-scoring|프롬프트 효율 점수 모델]] — 턴 3분류, 6대 지표, 4개 서브스코어 정규화 표, Cold-Start/모델 예외 규칙
+- [[concepts/plan-roi-recommendation|요금제 ROI 추천 엔진 (v2)]] — 결제 주기·Auth 모드 분리, 반사실적 $V_{\text{adj}}$ 산식, 플랜 변경 의사결정 매트릭스
+- [[concepts/two-tier-telemetry-accuracy|2계층 텔레메트리 정확도 모델]] — Adaptive Baseline, 리셋 시간대, Zero-Storage On-Demand 미리보기, Opt-in 단가 동기화
+- [[concepts/macos-menubar-widget-architecture|macOS 메뉴 막대·위젯 네이티브 아키텍처]] — 이원화 수집, 노치 안전 UI, 알림 정책, 상주 앱 생명주기, WidgetKit 리로드 제어
 
 ---
 
@@ -52,4 +52,4 @@
 
 ## Syntheses
 
-- [[syntheses/prd-agents-usage-mac|제품 기획서 (PRD): Agents Usage Mac]] — 실무 현업 수준 종합 기획서 (비전, 로드맵, FR-01~07, IA/UX, NFR, 리스크 매트릭스)
+- [[syntheses/prd-agents-usage-mac|제품 기획서 (PRD v1.1): Agents Usage Mac]] — 1차 리뷰(P0/P1/P2) 반영 실무 기획서 (정량 산식, 이원화 수집, 노치 UX, 리스크 매트릭스)

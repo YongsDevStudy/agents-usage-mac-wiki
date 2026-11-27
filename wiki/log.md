@@ -24,3 +24,6 @@
 
 ## [2026-11-27] update | 2-저장소 역할 분리 및 main Branch Protection · wiki-check CI 구성
 - agents-usage-mac-wiki(기획/문서) <-> agents-usage-mac(구현) 분리 및 PR-Only 보호 규칙 적용
+
+## [2026-11-27] update | PRD v1.1 및 핵심 개념 문서 4건 개정
+- 리뷰 P0(4)·P1(7)·P2(3) 결정 반영: Adaptive Baseline, 턴 3분류, 정규화/예외, V_adj, 노치 UX
