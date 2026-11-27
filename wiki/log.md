@@ -21,3 +21,6 @@
 
 ## [2026-11-27] update | GitHub 저장소·Org Project(#3)·Issue/PR 템플릿·초기 이슈(#1~#11) 셋업
 - YongsDevStudy/agents-usage-mac 연결 및 로드맵 보드 구성
+
+## [2026-11-27] update | 2-저장소 역할 분리 및 main Branch Protection · wiki-check CI 구성
+- agents-usage-mac-wiki(기획/문서) <-> agents-usage-mac(구현) 분리 및 PR-Only 보호 규칙 적용
