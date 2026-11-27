@@ -43,10 +43,10 @@ status: active
 4. **비효율 제거 후 조정 소비액 ($V_{\text{adj}}$ — 반사실적 절감 모델)**:
    - 단순 컨텍스트 방치 낭비 때문에 불필요한 상위 요금제 업그레이드를 추천하지 않도록 3대 개선 레버 절감액을 차감:
    - $$V_{\text{adj}} = \max\left(0.25\, V_{\text{api}},\; V_{\text{api}} - \left(\Delta C_{\text{bloat}} + \Delta C_{\text{cache}} + \Delta C_{\text{reasoning}}\right)\right)$$
-   - **$\Delta C_{\text{bloat}}$**: [[concepts/prompt-efficiency-scoring]] 기준 `15턴` 초과 미압축 세션에 15턴 주기 `/compact`를 적용했을 때의 재전송 입력 토큰 차액 추정치.
    - **$\Delta C_{\text{cache}}$**: 캐시 적중률 `80%` 미만 장기 세션(`>= 4,096` 토큰)에 80% 캐시 히트를 가정한 차액(비-Cold-Start 턴 대상).
+   - **$\Delta C_{\text{bloat}}$**: [[concepts/prompt-efficiency-scoring]] 기준 `15턴` 초과 미압축 세션에 15턴 주기 `/compact`를 적용했을 때의 재전송 입력 토큰 차액 추정치.
    - **$\Delta C_{\text{reasoning}}$**: `Thinking Overhead >= 75%` 단순 질의 턴을 동일 벤더 경량 모델(Flash/Sonnet/Luna)로 라우팅했을 때의 차액.
-   - **보수적 하한(`0.25 * V_api`)**: 추정치 과대 차감으로 인한 과소 추천 방지.
+   - **순차 적용(이중 차감 방지)**: 입력 토큰 절감이 중복 계산되지 않도록 `① 캐시 정규화(ΔC_cache) → ② 잔여 턴 압축 절감(ΔC_bloat) → ③ 추론 모델 라우팅(ΔC_reasoning)` 순으로 순차 산출하며 보수적 하한(`0.25 * V_api`) 적용.
 
 ---
 

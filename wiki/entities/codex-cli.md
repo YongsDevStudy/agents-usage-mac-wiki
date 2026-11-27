@@ -27,8 +27,10 @@ status: active
 ## 1. 로컬 로그 경로 및 구조
 
 - **기본 경로**: `~/.codex/sessions/YYYY/MM/DD/rollout-<timestamp>-<id>.jsonl`.
-- **경로 오버라이드**: 환경변수 `CODEX_HOME` 설정 시 `$CODEX_HOME/sessions/` 우선 탐색 필수.
-- **이벤트 모델**: 날짜별 디렉터리 내 세션당 1개 JSONL 파일. 사용자 프롬프트, 어시스턴트 응답, 쉘 실행, 패치 제안, 도구 실행 이벤트 기록 및 응답 페이로드 내 `input`, `output`, `cache read`, `cache write` 토큰 통계 포함.
+- **커스텀 경로**: Settings/온보딩에서 커스텀 Codex 루트 경로(`sessions/` 상위 디렉터리) 수동 지정 지원.
+- **이벤트 스키마 ([[sources/cli-schema-validation]])**:
+  - `session_meta`: `payload.id`, `timestamp`, `originator`, `model`, `cwd`.
+  - `event_msg` (`payload.type == "token_count"`): **`info.last_token_usage`만 증분 수집**(`info.total_token_usage`는 세션 누적치이므로 합산 금지), `info.model_context_window`, `payload.rate_limits` 기회적 수집.
 - **보조 확인 수단 및 OAuth 제약 ([[sources/oauth-tos-constraints]])**: CLI 자체 `/usage`, `/status` 커맨드 지원. 비공식 내부 경로(`chatgpt.com/backend-api/wham/usage`) 호출은 배제하고 v1은 Adaptive Baseline 유지, v2 Opt-in에서 CLI `/status` 로컬 프로브 또는 API Org 공식 Usage API 연동.
 
 ---

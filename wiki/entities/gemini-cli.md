@@ -27,10 +27,11 @@ status: active
 
 ## 1. 로컬 텔레메트리 구조 및 보존 제약
 
-- **세션 로그 경로**: `~/.gemini/tmp/<project_hash>/chats/session-<timestamp>-<uuid>.json` (JSON/JSONL).
+- **세션 로그 경로**: `~/.gemini/tmp/<project_hash>/chats/session-<timestamp>-<shortId>.jsonl` (최신 JSONL `SessionMetadataRecord` + `$set` 패치 + `kind: main|subagent` 및 구버전 `.json` 폴백 동시 지원, [[sources/cli-schema-validation]] 참조).
+- **프로젝트 해시**: 프로젝트 절대 경로의 `SHA-256` hex digest (신규 슬러그 매핑 및 워크스페이스 루트 해시 매칭).
 - **기록 데이터**:
   - 사용자 프롬프트·모델 응답 및 도구 호출 입출력/에러 상태.
-  - 토큰 세부 항목: `input`, `output`, `cached` (Context Cache Read), `thoughts` (내부 추론 토큰).
+  - `TokensSummary` 필드: `input`, `output`, `cached` (Context Cache Read), `thoughts` (내부 추론), `tool`, `total`.
 - **치명적 데이터 유실 리스크 (`sessionRetention`)**:
   - `~/.gemini/settings.json`의 `general.sessionRetention` (`maxAge: "30d"`, `maxCount: 50` 등) 설정으로 기한 경과 또는 개수 초과 세션 자동 삭제.
   - **설계 요건**: 앱 백그라운드 워커가 FSEvents 감지 즉시 로컬 SQLite DB에 세션·턴 메트릭을 증분 영구 적재(ingest)해 장기 ROI 분석 데이터 보존.

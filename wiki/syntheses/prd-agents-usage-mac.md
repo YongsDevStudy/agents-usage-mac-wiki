@@ -135,7 +135,7 @@ status: active
 ### FR-01. 다중 CLI 로컬 로그 이원화 수집·정규화 엔진 (v1.0)
 - **목적**: 로컬 코딩 에이전트 3종의 로그를 비침습적으로 감지·파싱해 통합 데이터 모델로 영구 저장.
 - **이원화 수집 전략**([[concepts/macos-menubar-widget-architecture]]):
-  - **Append-Only JSONL (`byte_offset` 증분)**: Claude Code(`~/.claude/projects/<project-path>/<session-id>.jsonl`), Codex CLI(`~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, `$CODEX_HOME` 지원).
+  - **Append-Only JSONL (`byte_offset` 증분)**: Claude Code(`~/.claude/projects/<project-path>/<session-id>.jsonl`), Codex CLI(`~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, Settings/온보딩 커스텀 루트 경로 수동 지정 지원).
   - **Full-JSON Snapshot Delta (`mtime` + `file_size` + `messages.count`/턴 ID 델타)**: Gemini CLI(`~/.gemini/tmp/<project_hash>/chats/session-*.json`).
   - **Catch-up 복구**: 앱 실행 시 및 `NSWorkspace.didWakeNotification`(잠자기 복귀) 수신 시 전체 감시 경로 델타 스캔 및 5시간 블록 타이머 재동기화.
 - **이벤트 3분류 및 단위 분리**:
@@ -144,7 +144,7 @@ status: active
 - **Auth 모드 및 메타데이터 보강 (시크릿 미열람)**:
   - macOS `launchd` GUI 앱은 터미널 환경변수를 상속하지 못하므로 환경변수 감지 배제.
   - **① CLI 설정 파일의 비민감 인증 타입 메타데이터(`selectedAuthType` 등, 키·토큰 원문 접근 금지) + ② 프로바이더 기본 과금 모드 + ③ 프로젝트/세션 수동 태깅**으로 `Subscription` vs `API Key` 구분.
-  - **Gemini `<project_hash>` 3단계 역매핑**: ① CLI 메타데이터 자동 추출 → ② 지정 워크스페이스 루트 경로 해시 매칭 → ③ 수동 프로젝트 별칭 편집.
+  - **Gemini `<project_hash>` 3단계 역매핑**: ① CLI 메타데이터 자동 추출 → ② 지정 워크스페이스 루트 경로 SHA-256 해시 매칭 → ③ 수동 프로젝트 별칭 편집 (macOS TCC 권한 거부 시 2단계 건너뛰고 3단계로 우아하게 폴백).
   - **시간대 기준**: Gemini CLI 일일 쿼터는 **Pacific Time(PT) 자정** 기본 적용 + 로컬 자정 토글 지원.
 - **중복·이상치·영구 보존 및 삭제권**:
   - Claude Code `requestId`/`message.id` 기준 최종 레코드 병합, 플레이스홀더(`input/output <= 2`) 감지 시 `confidence = low` 부여.
@@ -191,7 +191,7 @@ status: active
 
 ### FR-05. 버전 관리 외부 단가·요금제 카탈로그 및 로컬 오버라이드 (v1.0)
 - **목적**: AI 벤더 단가·프로모션 종료일·모델명 변경 시 앱 재빌드 없이 정확한 비용 계산 유지.
-- **기능 명세**: 번들 `pricing-catalog.json`(`effective_from`/`effective_until`, 캐시 배수, 장문 `>272K` 할증) + Sparkle 갱신 + 사용자 `pricing-overrides.json` + **Opt-in 정적 단가 JSON 동기화**(기본 비활성, 사용자 데이터 송신 0건) + 미등록 모델 패밀리 폴백.
+- **기능 명세**: 번들 `pricing-catalog.json`(`effective_from`/`effective_until`, 캐시 배수, 장문 `>272K` 할증) + Sparkle 갱신 + 사용자 `pricing-overrides.json` + **Opt-in 정적 단가 JSON 동기화**(기본 비활성, 사용자 데이터 송신 0건) + 미등록 모델 패밀리 폴백 + 원시 토큰 SSOT 기반 과거 이력 Re-pricing 지원([[syntheses/tdd-agents-usage-mac|TDD v1.0]], [[concepts/adr-core-decisions|ADR-003]]).
 - **인수 조건**:
   - `Given` 단가 자동 동기화 비활성(기본값) 상태 `When` 앱 실행 중 `Then` 외부 단가 서버 요청 0건 보장.
 
@@ -233,7 +233,7 @@ status: active
    - v2: Plan ROI 추천 카드, Tier 2 Opt-in 연동(Claude Statusline Bridge / Codex Probe·Org API / GCP OAuth).
 
 ### 6.4 최초 실행 온보딩 플로우
-1. 자동 경로 스캔(`~/.gemini`, `~/.claude`, `~/.codex`, `$CODEX_HOME`) + 워크스페이스 루트 폴더 지정(Gemini `<project_hash>` 매핑용).
+1. 자동 경로 스캔(`~/.gemini`, `~/.claude`, `~/.codex` + 커스텀 루트 수동 지정) + 워크스페이스 루트 폴더 지정(Gemini `<project_hash>` 매핑용, TCC 거부 시 수동 별칭 폴백).
 2. 프로바이더별 현재 요금제·결제일·기본 Auth 모드 선택.
 3. 메뉴 막대 초컴팩트/확장 모드 및 WidgetKit 추가 안내 → 백그라운드 초기 적재 시작.
 
