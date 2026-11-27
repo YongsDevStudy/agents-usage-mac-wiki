@@ -1,0 +1,32 @@
+name: "📐 Planning / Research / ADR"
+description: "기획 고도화, 로컬 로그 검증, 아키텍처 의사결정(ADR), 위키 업데이트"
+title: "[Planning] "
+labels: ["planning", "documentation"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: "🧭 배경 및 의사결정 문제"
+      description: "검증이 필요한 기술 제약, 설계 분기점, 리서치 주제"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "⚖️ 검토 대안 및 근거"
+      placeholder: "- 대안 A:\n- 대안 B:\n- 판단 기준:"
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: "📋 완료 조건"
+      value: |
+        - [ ] 근거 자료 수집 및 사실 검증
+        - [ ] `wiki/` 및 필요 시 `wiki/visuals/*.excalidraw.md` 갱신
+        - [ ] `wiki_tool.py lint` 통과 (Errors: 0, Warnings: 0)
+    validations:
+      required: true
+  - type: input
+    id: wiki_links
+    attributes:
+      label: "🔗 연관 위키 / PRD 문서"
+      placeholder: "예: wiki/syntheses/prd-agents-usage-mac.md"

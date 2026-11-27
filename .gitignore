@@ -1,0 +1,48 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Xcode & SwiftPM
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserdata
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+xcuserdata/
+
+# Secrets & Local Runtime State
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.mobileprovision
+*.provisionprofile
+oauth_creds.json
+auth.json
+*token*.json
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.db
+*.db-*
+
+# Obsidian Local UI State (keep wiki/ and raw/ tracked)
+.obsidian/workspace*.json
+.obsidian/cache
+.trash/
+
+# Temporary Build / Archive Outputs
+build/
+dist/
+*.dmg
+*.pkg

@@ -1,0 +1,55 @@
+name: "✨ Feature / Task"
+description: "신규 기능 구현, 개선 작업, 인프라 태스크 등록"
+title: "[Feat] "
+labels: ["feat"]
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: "🎯 목적 및 배경"
+      description: "기능 도입 배경 및 해결 대상 페인포인트 요약"
+      placeholder: "- 해결하려는 문제:\n- 기대 효과:"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: "🧩 대상 영역"
+      options:
+        - "Telemetry & Core"
+        - "Efficiency Engine"
+        - "macOS UI & Widget"
+        - "Plan ROI"
+        - "Release & Infra"
+    validations:
+      required: true
+  - type: checkboxes
+    id: target_cli
+    attributes:
+      label: "🤖 대상 CLI / 컴포넌트"
+      options:
+        - label: "Gemini CLI (~/.gemini)"
+        - label: "Claude Code (~/.claude)"
+        - label: "OpenAI Codex CLI (~/.codex)"
+        - label: "공통 / UI / 인프라"
+  - type: input
+    id: prd_ref
+    attributes:
+      label: "📄 관련 PRD 요구사항 ID / 위키 링크"
+      placeholder: "예: FR-01, wiki/concepts/prompt-efficiency-scoring.md"
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: "📋 세부 요구사항 및 완료 조건"
+      value: |
+        - [ ] 구현 항목 1
+        - [ ] 단위/통합 테스트 작성 및 통과
+        - [ ] 관련 위키/문서 동기화
+    validations:
+      required: true
+  - type: textarea
+    id: privacy_accuracy
+    attributes:
+      label: "🔒 데이터 정확도 및 프라이버시 영향"
+      description: "Tier 1(실측/추정) vs Tier 2 구분 및 원문 미저장/미전송 준수 여부"
+      placeholder: "- 정확도 등급:\n- 프라이버시 확인:"

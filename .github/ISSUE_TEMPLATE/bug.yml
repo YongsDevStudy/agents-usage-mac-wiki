@@ -1,0 +1,55 @@
+name: "🐛 Bug Report"
+description: "파서 오작동, UI/위젯 갱신 오류, 계산 불일치 제보"
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: symptoms
+    attributes:
+      label: "🐛 버그 증상"
+      description: "발생 현상, 에러 메시지, 잘못 집계된 수치 요약"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "💻 실행 환경"
+      placeholder: "예: macOS 27.1 (Apple Silicon) / Gemini CLI vX.Y.Z / App v0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: "🤖 발생 컴포넌트"
+      options:
+        - "Gemini CLI 파서"
+        - "Claude Code 파서"
+        - "Codex CLI 파서"
+        - "MenuBarExtra / 대시보드"
+        - "WidgetKit / App Group"
+        - "단가 카탈로그 / ROI 계산"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "🔁 재현 절차"
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected_vs_actual
+    attributes:
+      label: "🎯 기대 동작 vs 실제 동작"
+      value: |
+        - 기대: 
+        - 실제: 
+    validations:
+      required: true
+  - type: textarea
+    id: done_criteria
+    attributes:
+      label: "📋 완료 조건"
+      value: |
+        - [ ] 근본 원인 파악 및 최소 범위 수정
+        - [ ] 익명화된 픽스처 기반 회귀 테스트 추가 및 통과
